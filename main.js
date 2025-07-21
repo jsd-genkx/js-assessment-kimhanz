@@ -24,6 +24,10 @@ class Field {
   // Display on map
   print() {
     clear(); // ใช้ clear() เพื่อล้างหน้าจอทุกครั้งก่อนแสดง map ใหม่
+    for (let row of this.field) {
+      // ใช้ for of เพื่อวนลูป row.join("") รวม array ของแต่ละแถวให้กลายเป็น string เพื่อพิมพ์บน console
+      console.log(row.join(""));
+    }
   }
 
   // Receive commands from player
@@ -32,7 +36,8 @@ class Field {
       "Which way? (u = up, d = down, l = left, r = right): "
     );
     switch (
-      direction.toLowerCase() // ใช้ switch-case เพื่อเรียกฟังก์ชันการเคลื่อนที่ที่สอดคล้องกับอินพุต ถ้าอินพุตไม่ตรงกับตัวเลือกที่ให้ไว้ จะพิมพ์ error message
+      // ใช้ switch-case เพื่อเรียกฟังก์ชันการเคลื่อนที่ที่สอดคล้องกับอินพุต ถ้าอินพุตไม่ตรงกับตัวเลือกที่ให้ไว้ จะพิมพ์ error message
+      direction.toLowerCase()
     ) {
       case "u":
         this.moveUp();
@@ -64,6 +69,19 @@ class Field {
       this.gameOver = true;
       return;
     }
+
+    const nextMove = this.field[newRow][newCol];
+    if (nextMove === hole) {
+      console.log("You fell in a hole! Game over."); // ถ้าเจอ O → แพ้
+      this.gameOver = true;
+    } else if (nextMove === hat) {
+      console.log("You found your hat! You win!"); // ถ้าเจอ ^ → ชนะ
+      this.gameOver = true;
+    } else {
+      this.positionRow = newRow;
+      this.positionCol = newCol;
+      this.field[newRow][newCol] = pathCharacter; // ถ้าเดินได้ → อัปเดตตำแหน่งและ mark จุดใหม่ด้วย *
+    }
   }
 
   // Direction of movement
@@ -89,6 +107,26 @@ class Field {
     const field = new Array(height)
       .fill(null)
       .map(() => new Array(width).fill(fieldCharacter));
+
+    // ใช้ for loop วางรู (O) แบบสุ่มตามเปอร์เซ็นต์
+    for (let row = 0; row < height; row++) {
+      for (let col = 0; col < width; col++) {
+        if (Math.random() < holePercentage) {
+          field[row][col] = hole;
+        }
+      }
+    }
+
+    // ใช้ do while วางหมวก (^) ในตำแหน่งที่ไม่ซ้ำ [0][0]
+    let hatRow, hatCol;
+    do {
+      hatRow = Math.floor(Math.random() * height);
+      hatCol = Math.floor(Math.random() * width);
+    } while (hatRow === 0 && hatCol === 0);
+
+    field[hatRow][hatCol] = hat;
+
+    return field;
   }
 }
 
