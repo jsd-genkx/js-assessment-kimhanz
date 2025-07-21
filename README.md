@@ -131,10 +131,50 @@
 
 ### Thinking Process
 
-1. // step 1
-2. // step 2
-3. // ...
-4. // step n
+1. Define Constants & Symbols
+
+- สร้างสัญลักษณ์สำหรับแผนที่:
+- ░ = field, O = hole, ^ = hat, \* = path
+
+2. Create Class Field
+
+- กำหนด constructor() รับค่า array 2D
+- เซ็ตตำแหน่งผู้เล่นเริ่มต้นที่ [0][0]
+- ใช้ this.positionRow และ this.positionCol ติดตามตำแหน่งปัจจุบัน
+
+3. Implement print()
+
+- ใช้ clear() ลบหน้าจอ
+- แสดง map โดยใช้ console.log() แบบแถวต่อแถว
+
+4. Add Movement Methods
+
+- moveUp(), moveDown(), moveLeft(), moveRight()
+- เปลี่ยนตำแหน่งตามการเคลื่อนที่
+- เช็ค:
+- ถ้าเจอ ^ → ชนะ
+- ถ้าเจอ O → แพ้
+- ถ้าเดินออกนอกเขต → แจ้งเตือน
+- ถ้าเดินได้ → update map ให้ตำแหน่งใหม่เป็น \*
+
+5. Random Map Generation
+
+- สร้างฟังก์ชัน generateField(height, width, holePercentage)
+- วาง O แบบสุ่มตามเปอร์เซ็นต์
+- ใส่ ^ แบบสุ่ม (ไม่ซ้ำผู้เล่น)
+- สร้าง Field โดยใช้ฟิลด์ที่ถูก generate
+
+6. Game Loop
+
+- ใช้ prompt() ให้ผู้ใช้เลือกทิศทาง
+- หลังจากเคลื่อนที่ → เรียก print()
+- Loop ไปเรื่อย ๆ จนเจอเงื่อนไข win/loss/out
+
+7. Add Input Validation & Comments
+
+- เช็คคำสั่งที่ผู้ใช้ใส่
+- มีคำอธิบายโค้ดเพื่อความเข้าใจ
+- Which way? (u = up, d = down, l = left, r = right):
 
 _Notes:_<br>
 _- You can attach flowcharts, diagrams, and images as needed._<br>
